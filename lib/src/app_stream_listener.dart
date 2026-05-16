@@ -2,19 +2,32 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 
+/// Lifecycle-aware stream subscription.
+///
+/// This widget subscribes to [stream] in `initState`, resubscribes when the
+/// stream instance changes, and cancels the subscription on `dispose`.
 class AppStreamListener<T> extends StatefulWidget {
+  /// Stream of values to listen to.
   final Stream<T> stream;
 
+  /// Called for each data event emitted by [stream].
   final ValueChanged<T>? onData;
 
+  /// Called when [stream] emits an error.
   final ValueChanged<Object>? onError;
 
+  /// Called when [stream] is closed.
   final VoidCallback? onDone;
 
+  /// Whether to cancel the subscription when an error occurs.
+  ///
+  /// See [StreamSubscription.cancelOnError].
   final bool cancelOnError;
 
+  /// Optional widget displayed by this listener.
   final Widget? child;
 
+  /// Creates an [AppStreamListener].
   const AppStreamListener({
     super.key,
     required this.stream,

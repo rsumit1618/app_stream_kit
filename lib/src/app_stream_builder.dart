@@ -1,21 +1,46 @@
 import 'package:flutter/material.dart';
 
+/// Signature for the main UI builder.
+///
+/// The provided `data` is `null` when the stream has not produced a value yet.
 typedef AppStreamWidgetBuilder<T> =
     Widget Function(BuildContext context, T? data);
 
+/// A `StreamBuilder`-like widget with lifecycle callbacks.
+///
+/// This widget renders:
+/// - `emptyBuilder` when the stream is not connected / has no data.
+/// - `loadingBuilder` while waiting for the first event.
+/// - `builder` once data is available.
+/// - `errorBuilder` when the stream emits an error.
+///
+/// Additionally, it provides optional callbacks:
+/// - `onData` for each data event.
+/// - `onError` when an error event occurs.
+/// - `onDone` when the stream closes.
 class AppStreamBuilder<T> extends StreamBuilderBase<T, AsyncSnapshot<T>> {
+  /// Initial value used before the stream emits the first event.
+  ///
+  /// When `initialData` is `null`, the widget shows `emptyBuilder` until the
+  /// stream connects and produces a value.
   final T? initialData;
 
+  /// Called whenever the stream emits a data event.
   final ValueChanged<T>? onData;
 
+  /// Called whenever the stream emits an error.
   final ValueChanged<Object>? onError;
 
+  /// Called when the stream closes.
   final VoidCallback? onDone;
 
+  /// Builder shown while waiting for the first event.
   final WidgetBuilder? loadingBuilder;
 
+  /// Main builder for rendering the latest stream value.
   final AppStreamWidgetBuilder<T> builder;
 
+  /// Builder shown when the stream emits an error.
   final Widget Function(
     BuildContext context,
     Object error,
@@ -23,8 +48,11 @@ class AppStreamBuilder<T> extends StreamBuilderBase<T, AsyncSnapshot<T>> {
   )?
   errorBuilder;
 
+  /// Builder shown when the stream is not connected and no `initialData` is
+  /// available.
   final WidgetBuilder? emptyBuilder;
 
+  /// Creates an [AppStreamBuilder].
   const AppStreamBuilder({
     super.key,
     required Stream<T> stream,

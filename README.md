@@ -11,29 +11,87 @@ and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/to/develop-packages).
 -->
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+A small Flutter toolkit that makes it easier to build UI from Streams, with convenient builders and lifecycle-aware listeners.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- `AppStreamBuilder`: a `StreamBuilder`-like widget with customizable loading/empty/error builders.
+- `AppStreamListener`: lifecycle-aware stream subscription with `onData`, `onError`, and `onDone` callbacks.
+- `AppStreamConsumer`: combines listener + builder.
+- `AppStreamState`: simple typed state classes (optional utility).
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+Add `app_stream_kit` to your `pubspec.yaml`:
+
+```yaml
+dependencies:
+  app_stream_kit: ^0.0.1
+```
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+### AppStreamBuilder
 
 ```dart
-const like = 'sample';
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:app_stream_kit/app_stream_kit.dart';
+
+class Example extends StatelessWidget {
+  Example({super.key});
+
+  final Stream<int> stream = Stream<int>.periodic(const Duration(seconds: 1), (i) => i);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppStreamBuilder<int>(
+      stream: stream,
+      initialData: 0,
+      loadingBuilder: (_) => const CircularProgressIndicator(),
+      emptyBuilder: (_) => const Text('No data'),
+      errorBuilder: (context, error, _) => Text('Error: $error'),
+      onData: (data) {
+        // optional side-effect
+      },
+      builder: (context, data) => Text('Latest: $data'),
+    );
+  }
+}
+```
+
+### AppStreamListener
+
+```dart
+AppStreamListener<int>(
+  stream: stream,
+  onData: (data) => debugPrint('data: $data'),
+  onError: (e) => debugPrint('error: $e'),
+  onDone: () => debugPrint('done'),
+  child: const Text('Listening...'),
+)
+```
+
+### AppStreamConsumer
+
+```dart
+AppStreamConsumer<int>(
+  stream: stream,
+  initialData: 0,
+  listener: (context, data) {
+    debugPrint('consumer data: $data');
+  },
+  loadingBuilder: (_) => const CircularProgressIndicator(),
+  errorBuilder: (context, error, _) => Text('Error: $error'),
+  emptyBuilder: (_) => const Text('No data'),
+  builder: (context, data) => Text('Latest: $data'),
+)
 ```
 
 ## Additional information
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+- GitHub: https://github.com/rsumit1618/app_stream_kit
+- Issues: https://github.com/rsumit1618/app_stream_kit/issues
+
+Pull requests welcome.
+

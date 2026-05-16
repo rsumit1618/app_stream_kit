@@ -1,20 +1,19 @@
 name: app_stream_kit
-description: "A new Flutter package project."
+description: Utilities for building Flutter UIs from streams.
 version: 0.0.1
-homepage:
-
+homepage: https://pub.dev/packages/app_stream_kit
+repository: https://github.com/rsumit1618/app_stream_kit
 environment:
   sdk: ^3.8.1
-  flutter: ">=1.17.0"
-
+  flutter: ">=3.17.0"
 dependencies:
   flutter:
     sdk: flutter
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

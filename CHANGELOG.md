@@ -1,3 +1,7 @@
 ## 0.0.1
 
-* TODO: Describe initial release.
+- Initial public release.
+- Added stream-driven widgets: `AppStreamBuilder`, `AppStreamListener`, and `AppStreamConsumer`.
+- Added `AppStreamState` utilities.
+
+
